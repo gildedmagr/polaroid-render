@@ -5,10 +5,12 @@ const fs = require('fs');
 const polaroidRenderPage = 'https://{0}/index.php?route=polaroid/polaroid/renderPolaroid&uid={1}&page={2}&type={3}';
 let domains = fs.readFileSync(process.env.DOMAINS_DICT_PATH || 'domains.json');
 let domainsMap = JSON.parse(domains);
+const relativeDestinationPath = 'image/polaroid';
 
 const startRender = async (domain, uid, pages, type) => {
     const start = Date.now();
-    const destinationPath = `${domainsMap[domain]}/image/polaroid/${uid}`;
+    const destinationPath = `${domainsMap[domain]}/${relativeDestinationPath}/${uid}`;
+    const links = [];
     if (!fs.existsSync(destinationPath)) {
         fs.mkdirSync(destinationPath, { recursive: true });
     }
@@ -30,7 +32,6 @@ const startRender = async (domain, uid, pages, type) => {
             }
         );
         const page = await browser.newPage();
-
         for (let i = 0; i < pages; i++) {
             await page.goto(placeholdify(polaroidRenderPage, domain, uid, i, type));
             await page.screenshot({
@@ -38,6 +39,7 @@ const startRender = async (domain, uid, pages, type) => {
                 type: 'jpeg',
                 quality: 100
             });
+            links.push(`${domain}/${relativeDestinationPath}/${uid}/${i}.jpg`)
         }
         await browser.close();
 
@@ -45,7 +47,7 @@ const startRender = async (domain, uid, pages, type) => {
     const end = Date.now();
     console.log(`Time Taken to execute = ${(end - start) / 1000} seconds`);
 
-    return {'status': 'completed', 'pages': pages, 'time': `${(end - start) / 1000}`};
+    return {'status': 'completed', 'pages': pages, 'images': links, 'time': `${(end - start) / 1000}`};
 }
 
 module.exports = {
