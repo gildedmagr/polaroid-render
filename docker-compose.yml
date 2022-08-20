@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  node:
+    build: .
+    image: polaroid-render:latest
+    command: "npm start"
+    environment:
+      - PORT=8080
+      - NODE_ENV=production
+      - DOMAINS_DICT_PATH=domains.json
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "8070:8080"
