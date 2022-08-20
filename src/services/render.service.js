@@ -43,7 +43,7 @@ const startRender = async (domain, uid, pages, type) => {
                 quality: 100
             });
             console.log('Snapshot has been created');
-            links.push(`${destinationPath}/${i}.jpg`)
+            links.push(`${domain}/${relativeDestinationPath}/${uid}/${i}.jpg`);
         }
         await browser.close();
 
