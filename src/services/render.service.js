@@ -34,12 +34,15 @@ const startRender = async (domain, uid, pages, type) => {
         );
         const page = await browser.newPage();
         for (let i = 0; i < pages; i++) {
-            await page.goto(placeholdify(polaroidRenderPage, domain, uid, i, type));
+            const url = placeholdify(polaroidRenderPage, domain, uid, i, type);
+            console.log(`Going to create snapshot from: ${url}`)
+            await page.goto(url);
             await page.screenshot({
                 path: `${destinationPath}/${i}.jpg`,
                 type: 'jpeg',
                 quality: 100
             });
+            console.log('Snapshot has been created');
             links.push(`${destinationPath}/${i}.jpg`)
         }
         await browser.close();
