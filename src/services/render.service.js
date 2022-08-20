@@ -2,34 +2,37 @@ const puppeteer = require("puppeteer");
 const placeholdify = require('placeholdify');
 const fs = require('fs');
 
-const polaroidRenderPage = 'https://{0}/index.php?route=polaroid/polaroid/renderPolaroid&uid={1}&page={2}';
+const polaroidRenderPage = 'https://{0}/index.php?route=polaroid/polaroid/renderPolaroid&uid={1}&page={2}&type={3}';
 let domains = fs.readFileSync(process.env.DOMAINS_DICT_PATH || 'domains.json');
 let domainsMap = JSON.parse(domains);
-console.log(domainsMap);
 
-const renderPolaroid = async (domain, uid, pages) => {
-    console.log(domainsMap[domain]);
+const startRender = async (domain, uid, pages, type) => {
     const start = Date.now();
     const destinationPath = `${domainsMap[domain]}/image/polaroid/${uid}`;
     if (!fs.existsSync(destinationPath)) {
         fs.mkdirSync(destinationPath, { recursive: true });
     }
+    const browserWidth = type === 'polaroid' ? 2040 : 1520;
+    const browserHeight = type === 'polaroid' ? 3040 : 1870;
     await (async () => {
         const browser = await puppeteer.launch(
             {
                 headless: true,
                 ignoreHTTPSErrors: true,
-                args: [`--window-size=2040,3040`],
+                args: [
+                    `--window-size=${browserWidth},${browserHeight}`,
+                    '--no-sandbox'
+                ],
                 defaultViewport: {
-                    width: 2040,
-                    height: 3040
+                    width: browserWidth,
+                    height: browserHeight
                 }
             }
         );
         const page = await browser.newPage();
 
         for (let i = 0; i < pages; i++) {
-            await page.goto(placeholdify(polaroidRenderPage, domain, uid, i));
+            await page.goto(placeholdify(polaroidRenderPage, domain, uid, i, type));
             await page.screenshot({
                 path: `${destinationPath}/${i}.jpg`,
                 type: 'jpeg',
@@ -42,9 +45,9 @@ const renderPolaroid = async (domain, uid, pages) => {
     const end = Date.now();
     console.log(`Time Taken to execute = ${(end - start) / 1000} seconds`);
 
-    return {'status': 'ok'};
+    return {'status': 'completed', 'pages': pages, 'time': `${(end - start) / 1000}`};
 }
 
 module.exports = {
-    renderPolaroid
+    startRender
 }

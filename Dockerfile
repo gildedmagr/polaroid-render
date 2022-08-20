@@ -18,5 +18,8 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
 
 WORKDIR /usr/src/app/
-COPY . /usr/src/app/
+COPY package*.json ./
 RUN npm install
+RUN npm ci --only=production
+
+COPY . .
