@@ -19,6 +19,7 @@ const startRender = async (domain, uid, pages, type) => {
     await (async () => {
         const browser = await puppeteer.launch(
             {
+                executablePath: '/usr/bin/google-chrome',
                 headless: true,
                 ignoreHTTPSErrors: true,
                 args: [
@@ -39,7 +40,7 @@ const startRender = async (domain, uid, pages, type) => {
                 type: 'jpeg',
                 quality: 100
             });
-            links.push(`${domain}/${relativeDestinationPath}/${uid}/${i}.jpg`)
+            links.push(`${destinationPath}/${i}.jpg`)
         }
         await browser.close();
 

@@ -4,7 +4,7 @@ const healthStatus = (req, res, next) => {
     res.json({'healthy': true});
 }
 
-const renderPolaroid = async (req, res, next) => {
+const render = async (req, res, next) => {
     try {
         const domain = req.query.domain;
         const uid = req.query.uid;
@@ -19,5 +19,5 @@ const renderPolaroid = async (req, res, next) => {
 
 module.exports = {
     healthStatus,
-    renderPolaroid
+    render
 }
