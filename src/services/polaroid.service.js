@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const placeholdify = require('placeholdify');
 const fs = require('fs');
 const {Image} = require('image-js');
+const { emit } = require("./index");
 
 const polaroidRenderPage = 'https://{0}/index.php?route=polaroid/polaroid/renderPolaroid&uid={1}&page={2}&type={3}';
 const domains = fs.readFileSync(process.env.DOMAINS_DICT_PATH || 'domains.json');
@@ -217,8 +218,9 @@ const testRender = async (domain, uid, totalPages) => {
 
         //fs.rmSync(destFile);
         viewPortWidth = browserWidth;
-        resultLinks.push(`/${relativePath}/${number + 1}.jpg`)
-        resultLinks.push(`/${relativePath}/${number + 2}.jpg`)
+        resultLinks.push(`/${relativePath}/${number + 1}.jpg`);
+        resultLinks.push(`/${relativePath}/${number + 2}.jpg`);
+        emit(uid, 'progress', Math.round(100 / totalPages * currentPage));
     }
     await page.close();
 
