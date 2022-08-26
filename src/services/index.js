@@ -1,5 +1,6 @@
-const {renderPolaroid} = require('./render.service');
+const {renderPolaroid, testRender} = require('./polaroid.service');
 
 module.exports = {
-    renderPolaroid
+    renderPolaroid,
+    testRender
 }
