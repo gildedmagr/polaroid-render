@@ -86,7 +86,7 @@ const testRender = async (domain, uid, totalPages) => {
     const multiplier = 1;
     const browserWidth = 1360 * multiplier;
     const browserHeight = 690 * multiplier;
-    const relativePath = `image/photobook/snapshot/${uid}`;
+    const relativePath = `image/photobook/snapshots/${uid}`;
     const destinationPath = `${domainsMap[domain]}/${relativePath}`;
     if (!fs.existsSync(destinationPath)) {
         fs.mkdirSync(destinationPath, {recursive: true});
