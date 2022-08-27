@@ -139,11 +139,13 @@ const testRender = async (domain, uid, totalPages, userPreview) => {
             width: viewPortWidth,
             height: browserHeight
         })
+        emit(uid, 'progress', Math.round((100 / totalPages * currentPage) * 0.33));
         await page.screenshot({
             path: destFile,
             type: 'jpeg',
             quality: 100
         });
+        emit(uid, 'progress', Math.round((100 / totalPages * currentPage) * 0.66));
         console.log('Snapshot has been created');
         let image = await Image.load(destFile);
         let borderSize = currentPage === 1 ? Math.round(viewPortWidth / 100 * 3) : Math.round(image.height - image.height / 1.02040);
