@@ -28,8 +28,9 @@ const render2 = async (req, res, next) => {
         if(userPreview === false){
             const result = await renderService.testRender(domain, uid, pages, userPreview);
             res.json(result);
+        }else{
+            res.json([]);
         }
-        res.json([]);
     } catch (err) {
         console.error(`Error while getting programming languages`, err.message);
         next(err);
