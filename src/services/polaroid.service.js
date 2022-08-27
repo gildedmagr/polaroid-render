@@ -220,9 +220,7 @@ const testRender = async (domain, uid, totalPages, userPreview) => {
         viewPortWidth = browserWidth;
         resultLinks.push(`/${relativePath}/${number + 1}.jpg`);
         resultLinks.push(`/${relativePath}/${number + 2}.jpg`);
-        if(!userPreview){
-            emit(uid, 'progress', Math.round(100 / totalPages * currentPage));
-        }
+        emit(uid, 'progress', Math.round(100 / totalPages * currentPage));
     }
     await page.close();
 
