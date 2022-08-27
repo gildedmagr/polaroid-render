@@ -2,7 +2,7 @@ const {Server} = require("socket.io");
 let socketIO;
 const clients = {};
 const createSocketInstance = (http) => {
-    socketIO = new Server(http);
+    socketIO = new Server(http, {cors: {origin: "*"}});
     socketIO.on('connection', (socket) => {
         const uid = socket.handshake.query['uid'];
         console.log('a user connected, uid: ', uid);
