@@ -83,7 +83,7 @@ const startRender = async (domain, uid, pages, type) => {
     return {'status': 'completed', 'pages': pages, 'images': links, 'time': `${(end - start) / 1000}`};
 }
 
-const testRender = async (domain, uid, totalPages) => {
+const testRender = async (domain, uid, totalPages, userPreview) => {
     const multiplier = 1;
     const browserWidth = 1360 * multiplier;
     const browserHeight = 690 * multiplier;
@@ -220,7 +220,9 @@ const testRender = async (domain, uid, totalPages) => {
         viewPortWidth = browserWidth;
         resultLinks.push(`/${relativePath}/${number + 1}.jpg`);
         resultLinks.push(`/${relativePath}/${number + 2}.jpg`);
-        emit(uid, 'progress', Math.round(100 / totalPages * currentPage));
+        if(!userPreview){
+            emit(uid, 'progress', Math.round(100 / totalPages * currentPage));
+        }
     }
     await page.close();
 

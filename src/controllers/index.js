@@ -23,7 +23,8 @@ const render2 = async (req, res, next) => {
         const domain = req.query.domain;
         const uid = req.query.uid;
         const pages = req.query.pages;
-        const result = await renderService.testRender(domain, uid, pages);
+        const userPreview = req.query.userPreview;
+        const result = await renderService.testRender(domain, uid, pages, userPreview);
         res.json(result);
     } catch (err) {
         console.error(`Error while getting programming languages`, err.message);
