@@ -25,7 +25,7 @@ const render2 = async (req, res, next) => {
         const pages = req.query.pages;
         const userPreview = req.query.userPreview;
         console.log(userPreview);
-        if(userPreview == false){
+        if(userPreview === 'false'){
             const result = await renderService.testRender(domain, uid, pages, userPreview);
             res.json(result);
         }else{
