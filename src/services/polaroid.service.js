@@ -138,6 +138,7 @@ const testRender = async (domain, uid, totalPages, userPreview) => {
             ignoreHTTPSErrors: true,
             args: minimal_args,
             dumpio: false,
+            userDataDir: '/tmp',
             defaultViewport: {
                 width: browserWidth,
                 height: browserHeight
